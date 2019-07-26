@@ -14,6 +14,12 @@ const router = new Router({
   routes,
   mode: 'history'
 })
+
+router.$addRoutes = (params) => {
+  router.matcher = new Router({mode: 'history'}).matcher;
+  router.addRoutes(params)
+}
+
 const LOGIN_PAGE_NAME = 'login'
 
 const turnTo = (to, access, next) => {

@@ -42,7 +42,7 @@ export default {
   },
   mutations: {
     updateMenuList(state, routes) { // ①添 接受前台数组，刷新菜单
-      router.addRoutes(routes); // 动态添加路由
+      router.$addRoutes(routes); // 动态添加路由
       state.menuList = routes;
       console.log('①updateMenuList添menuList', this);
     },
