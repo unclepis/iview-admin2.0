@@ -1,7 +1,9 @@
+/* eslint-disable */
 import Mock from 'mockjs'
 import { doCustomTimes } from '@/libs/util'
 import orgData from './data/org-data'
 import { treeData } from './data/tree-select'
+import { mockMenuData } from './data/menu-data'
 const Random = Mock.Random
 
 export const getTableData = req => {
@@ -38,3 +40,7 @@ export const getOrgData = req => {
 export const getTreeSelectData = req => {
   return treeData
 }
+
+export const getMockMenuData = req => {
+  return mockMenuData
+} 

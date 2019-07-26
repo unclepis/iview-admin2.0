@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {
   getBreadCrumbList,
   setTagNavListInLocalstorage,
@@ -35,17 +36,23 @@ export default {
     hasReadErrorPage: false
   },
   getters: {
-    menuList: (state, getters, rootState) => getMenuByRouter(routers, rootState.user.access),
-    errorCount: state => state.errorList.length
+    // menuList: (state, getters, rootState) => getMenuByRouter(routers, rootState.user.access),
+    errorCount: state => state.errorList.length,
+    menuList: (state, getters, rootState) => getMenuByRouter(state.menuList, rootState.user.access), // ①改 通过路由列表得到菜单列表
   },
   mutations: {
-    setBreadCrumb (state, route) {
+    updateMenuList(state, routes) { // ①添 接受前台数组，刷新菜单
+      router.addRoutes(routes); // 动态添加路由
+      state.menuList = routes;
+      console.log('①updateMenuList添menuList', this);
+    },
+    setBreadCrumb(state, route) {
       state.breadCrumbList = getBreadCrumbList(route, state.homeRoute)
     },
-    setHomeRoute (state, routes) {
+    setHomeRoute(state, routes) {
       state.homeRoute = getHomeRoute(routes, homeName)
     },
-    setTagNavList (state, list) {
+    setTagNavList(state, list) {
       let tagList = []
       if (list) {
         tagList = [...list]
@@ -59,13 +66,13 @@ export default {
       state.tagNavList = tagList
       setTagNavListInLocalstorage([...tagList])
     },
-    closeTag (state, route) {
+    closeTag(state, route) {
       let tag = state.tagNavList.filter(item => routeEqual(item, route))
       route = tag[0] ? tag[0] : null
       if (!route) return
       closePage(state, route)
     },
-    addTag (state, { route, type = 'unshift' }) {
+    addTag(state, { route, type = 'unshift' }) {
       let router = getRouteTitleHandled(route)
       if (!routeHasExist(state.tagNavList, router)) {
         if (type === 'push') state.tagNavList.push(router)
@@ -76,19 +83,19 @@ export default {
         setTagNavListInLocalstorage([...state.tagNavList])
       }
     },
-    setLocal (state, lang) {
+    setLocal(state, lang) {
       localSave('local', lang)
       state.local = lang
     },
-    addError (state, error) {
+    addError(state, error) {
       state.errorList.push(error)
     },
-    setHasReadErrorLoggerStatus (state, status = true) {
+    setHasReadErrorLoggerStatus(state, status = true) {
       state.hasReadErrorPage = status
     }
   },
   actions: {
-    addErrorLog ({ commit, rootState }, info) {
+    addErrorLog({ commit, rootState }, info) {
       if (!window.location.href.includes('error_logger_page')) commit('setHasReadErrorLoggerStatus', false)
       const { user: { token, userId, userName } } = rootState
       let data = {

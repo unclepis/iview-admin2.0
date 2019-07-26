@@ -1,3 +1,4 @@
+/* eslint-disable */
 import axios from '@/libs/api.request'
 
 export const getTableData = () => {
@@ -47,5 +48,13 @@ export const getTreeSelectData = () => {
   return axios.request({
     url: 'get_tree_select_data',
     method: 'get'
+  })
+}
+
+// 获取动态
+export const getMockMenuData = () => {
+  return axios.request({
+    url: 'get_mock_menu_data',
+    method: 'post'
   })
 }

@@ -1,3 +1,4 @@
+/* eslint-disable */
 export const forEach = (arr, fn) => {
   if (!arr.length || !fn) return
   let i = -1
@@ -213,3 +214,6 @@ export const objEqual = (obj1, obj2) => {
   /* eslint-disable-next-line */
   else return !keysArr1.some(key => obj1[key] != obj2[key])
 }
+
+//  @函数: 引入组件
+export const lazyLoadingCop = file => require('@/view/' + file + '.vue').default
