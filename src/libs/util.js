@@ -1,3 +1,4 @@
+/* eslint-disable */
 import Cookies from 'js-cookie'
 // cookie保存的天数
 import config from '@/config'
@@ -347,7 +348,8 @@ export const localSave = (key, value) => {
 }
 
 export const localRead = (key) => {
-  return localStorage.getItem(key) || ''
+  let val = localStorage.getItem(key) || '';
+  return key === 'undefined' ? eval(val) : val
 }
 
 // scrollTop animation

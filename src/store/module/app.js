@@ -16,6 +16,7 @@ import { saveErrorLogger } from '@/api/data'
 import router from '@/router'
 import routers from '@/router/routers'
 import config from '@/config'
+import { dynamicRouterAdd } from '@/libs/router-util' // ①添 引入加载菜单
 const { homeName } = config
 
 const closePage = (state, route) => {
@@ -33,16 +34,18 @@ export default {
     homeRoute: {},
     local: localRead('local'),
     errorList: [],
+    menuList: [],
     hasReadErrorPage: false
   },
   getters: {
     // menuList: (state, getters, rootState) => getMenuByRouter(routers, rootState.user.access),
     errorCount: state => state.errorList.length,
-    menuList: (state, getters, rootState) => getMenuByRouter(state.menuList, rootState.user.access), // ①改 通过路由列表得到菜单列表
+    menuList: (state, getters, rootState) => getMenuByRouter(dynamicRouterAdd(), rootState.user.access), // ①改 通过路由列表得到菜单列表
   },
   mutations: {
     updateMenuList(state, routes) { // ①添 接受前台数组，刷新菜单
-      router.$addRoutes(routes); // 动态添加路由
+      router.addRoutes(routes); // 动态添加路由
+      // router.$addRoutes(routes); // 动态添加路由
       state.menuList = routes;
       console.log('①updateMenuList添menuList', this);
     },

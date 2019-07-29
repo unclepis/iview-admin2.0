@@ -5,7 +5,6 @@ import routes from './routers'
 import store from '@/store'
 import iView from 'iview'
 import { setToken, getToken, canTurnTo, setTitle } from '@/libs/util'
-import { initRouter } from '@/libs/router-util'
 import config from '@/config'
 const { homeName } = config
 
@@ -16,7 +15,7 @@ const router = new Router({
 })
 
 router.$addRoutes = (params) => {
-  router.matcher = new Router({mode: 'history'}).matcher;
+  router.matcher = new Router({ mode: 'history' }).matcher;
   router.addRoutes(params)
 }
 
@@ -37,7 +36,6 @@ router.beforeEach((to, from, next) => {
     })
   } else if (!token && to.name === LOGIN_PAGE_NAME) {
     // 未登陆且要跳转的页面是登录页
-    initRouter()  // 登录页刷新重新获取,确保路由跳转前即beforeEach获取到动态路由表
     next() // 跳转
   } else if (token && to.name === LOGIN_PAGE_NAME) {
     // 已登录且要跳转的页面是登录页
@@ -45,19 +43,7 @@ router.beforeEach((to, from, next) => {
       name: homeName // 跳转到homeName页
     })
   } else {
-    if (store.state.user.hasGetInfo) {
-      turnTo(to, store.state.user.access, next)
-    } else {
-      store.dispatch('getUserInfo').then(user => {
-        // 拉取用户信息，通过用户权限和跳转的页面的name来判断是否有权限访问;access必须是一个数组，如：['super_admin'] ['super_admin', 'admin']
-        turnTo(to, user.access, next)
-      }).catch(() => {
-        setToken('')
-        next({
-          name: 'login'
-        })
-      })
-    }
+    next()
   }
 })
 
